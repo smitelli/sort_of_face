@@ -1,0 +1,1 @@
+  //REQUIRE: PHP 5.3, curl, mbstring
