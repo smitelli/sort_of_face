@@ -1,5 +1,12 @@
 <?php
 
+  /**
+   * sort_of_face: A Twitter Gibberish Bot
+   *
+   * @author Scott Smitelli
+   * @package sort_of_face
+   */
+
   // Support autoloading classes as they are needed
   define('APP_DIR', realpath(dirname(__FILE__)));
   spl_autoload_register(function($class_name) {
