@@ -46,7 +46,6 @@
         throw new TwitterException("Could not contact Twitter API.");
       }
 
-      $result = json_decode($response);
       if (isset($result->error)) {
         // Response had an error indication
         throw new TwitterException("Twitter says: {$result->error}");
