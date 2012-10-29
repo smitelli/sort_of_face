@@ -24,7 +24,7 @@
 
     /**
      * Removes one item from the front of this collection and returns it. This
-     * method is overridded so lineCleanup() can auto-run on each item.
+     * method is overridden so lineCleanup() can auto-run on each item.
      * @access public
      * @return mixed An item from the front of the collection
      */
