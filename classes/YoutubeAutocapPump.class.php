@@ -100,7 +100,13 @@
      */
     private static function lineCleanup($str) {
       $str = self::htmlToText($str);  //de-HTML-ify the line
-      $str = str_replace('_', '.', $str);  //fix "u_s_a_" to be "u.s.a."
+
+      // Fix "u_s_a_" to be "USA", and "r_ kelly" to be "R. kelly"
+      $str = preg_replace_callback('/(._)+/', function($matches) {
+        $dot = (substr_count($matches[0], '_') > 1) ? '' : '.';
+        return str_replace('_', $dot, strtoupper($matches[0]));
+      }, $str);
+
       return $str;
     }
 
