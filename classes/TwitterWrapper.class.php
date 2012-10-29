@@ -39,7 +39,7 @@
     public function sendTweet($status) {
       // Make the request and read the API response
       $twitter = new TwitterOAuth($this->consumer_key, $this->consumer_secret, $this->access_token, $this->access_token_secret);
-      $response = $twitter->oAuthRequest('http://api.twitter.com/1/statuses/update.json', 'POST', array('status' => $status));
+      $response = $twitter->post('http://api.twitter.com/1/statuses/update.json', array('status' => $status));
 
       if (empty($response)) {
         // Response was blank
