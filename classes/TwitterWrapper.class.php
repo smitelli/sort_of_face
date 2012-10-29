@@ -46,11 +46,11 @@
         throw new TwitterException("Could not contact Twitter API.");
       }
 
-      if (isset($result->error)) {
+      if (isset($response->error)) {
         // Response had an error indication
-        throw new TwitterException("Twitter says: {$result->error}");
+        throw new TwitterException("Twitter says: {$response->error}");
 
-      } else if (!isset($result->created_at)) {
+      } else if (!isset($response->created_at)) {
         // Response lacked any indication that the tweet was created
         throw new TwitterException("Could not create tweet.");
       }
