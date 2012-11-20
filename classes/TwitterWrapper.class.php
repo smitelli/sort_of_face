@@ -55,6 +55,64 @@
         throw new TwitterException("Could not create tweet.");
       }
     }
+    
+    /**
+     * Escapes certain string sequences that can be interpreted by Twitter as
+     * being commands to perform undesired actions.
+     * @access public
+     * @param string $text The input text to sanitize
+     * @return string The same text, with special SMS command sequences escaped
+     */
+    public static function smsCommandEscape($text) {
+      // https://support.twitter.com/articles/14020-twitter-for-sms-basic-features
+      if (preg_match('/^on$/i', $text)  //ON
+       || preg_match('/^on\s+\w+$/i', $text)  //ON [name]
+       || preg_match('/^off$/i', $text)  //OFF
+       || preg_match('/^off\s+\w+$/i', $text)  //OFF [name]
+       || preg_match('/^follow\s+\w+$/i', $text)  //FOLLOW [name]
+       || preg_match('/^f\s+\w+$/i', $text)  //F [name]
+       || preg_match('/^unfollow\s+\w+$/i', $text)  //UNFOLLOW [name]
+       || preg_match('/^leave\s+\w+$/i', $text)  //LEAVE [name]
+       || preg_match('/^l\s+\w+$/i', $text)  //L [name]
+       || preg_match('/^block\s+\w+$/i', $text)  //BLOCK [name]
+       || preg_match('/^blk\s+\w+$/i', $text)  //BLK [name]
+       || preg_match('/^unblock\s+\w+$/i', $text)  //UNBLOCK [name]
+       || preg_match('/^unblk\s+\w+$/i', $text)  //UNBLK [name]
+       || preg_match('/^report\s+\w+$/i', $text)  //REPORT [name]
+       || preg_match('/^rep\s+\w+$/i', $text)  //REP [name]
+       || preg_match('/^stop$/i', $text)  //STOP
+       || preg_match('/^quit$/i', $text)  //QUIT
+       || preg_match('/^end$/i', $text)  //END
+       || preg_match('/^cancel$/i', $text)  //CANCEL
+       || preg_match('/^unsubscribe$/i', $text)  //UNSUBSCRIBE
+       || preg_match('/^arret$/i', $text)  //ARRET
+       || preg_match('/^d\s+/i', $text)  //D [...]
+       || preg_match('/^m\s+/i', $text)  //M [...]
+       || preg_match('/^retweet\s+\w+$/i', $text)  //RETWEET [name]
+       || preg_match('/^rt\s+\w+$/i', $text)  //RT [name]
+       || preg_match('/^set\s+/i', $text)  //SET [...]
+       || preg_match('/^whois\s+\w+$/i', $text)  //WHOIS [name]
+       || preg_match('/^w\s+\w+$/i', $text)  //W [name]
+       || preg_match('/^get\s+\w+$/i', $text)  //GET [name]
+       || preg_match('/^g\s+\w+$/i', $text)  //G [name]
+       || preg_match('/^fav\s+\w+$/i', $text)  //FAV [name]
+       || preg_match('/^fave\s+\w+$/i', $text)  //FAVE [name]
+       || preg_match('/^favorite\s+\w+$/i', $text)  //FAVORITE [name]
+       || preg_match('/^favourite\s+\w+$/i', $text)  //FAVOURITE [name]
+       || preg_match('/^\*\w+$/i', $text)  //*[name]
+       || preg_match('/^stats\s+\w+$/i', $text)  //STATS [name]
+       || preg_match('/^suggest$/i', $text)  //SUGGEST
+       || preg_match('/^sug$/i', $text)  //SUG
+       || preg_match('/^s$/i', $text)  //S
+       || preg_match('/^wtf$/i', $text)  //WTF
+       || preg_match('/^help$/i', $text)  //HELP
+       || preg_match('/^info$/i', $text)  //INFO
+       || preg_match('/^aide$/i', $text)  //AIDE
+      ) {
+        $text = ". {$text}";
+      }
+      return $text;
+    }
   }
 
 ?>

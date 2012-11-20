@@ -62,6 +62,9 @@
         // Loop over every line from the autocap file
         while ($captions->hasItems()) {
           $line = $captions->nextItem();
+          
+          // Make sure the line doesn't start with an SMS command sequence
+          $line = TwitterWrapper::smsCommandEscape($line);
 
           // Trim the line to a random length
           $length = rand($config['twitter']['min_length'], $config['twitter']['max_length']);
