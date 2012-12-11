@@ -30,3 +30,7 @@ access_token_secret = "FILL ME IN"
 ; very short) or more (if a long word starts at the end of the chosen length).
 min_length = 20
 max_length = 140
+
+; The probability, in percentages (0 - 100%), that the tweet will be sent out in
+; fake Cyrillic encoding.
+cyrillic_probability = 10
