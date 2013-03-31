@@ -35,11 +35,12 @@
         throw new PumpException("Could not parse the loaded {$this->itemNoun}.");
       }
 
-      // Result is grouped by hours; flatten it to a single array
+      // Result is grouped by hours; flatten it to a single array and remove URL
+      // encoding.
       $tmp = array();
       foreach ($dataObj->trends as $hour) {
         foreach ($hour as $item) {
-          $tmp[] = $item->query;
+          $tmp[] = urldecode($item->query);
         }
       }
 
