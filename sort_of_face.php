@@ -24,10 +24,10 @@
   }
 
   // Only run if the time is within `run_grace` minutes of `run_interval` past the hour
-  echo "========== Currently " . date('r') . " ==========\n";
+  echo "========== Currently " . date('r') . " ==========";
   $offset = intval(date('i')) % $config['timing']['run_interval'];
   if ($offset > $config['timing']['run_grace']) {
-    die("Not time to run.\n\n");
+    die("\nNot time to run.\n\n");
   }
 
   // Load the current trends from Twitter
@@ -43,7 +43,7 @@
   while ($trends->hasItems()) {
     if (++$attempts > $config['timing']['max_attempts']) {
       // Runaway script protection
-      die("Too many failed attempts.\n\n");
+      die("\nToo many failed attempts.\n\n");
     }
 
     try {
