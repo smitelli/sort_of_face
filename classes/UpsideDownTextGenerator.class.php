@@ -1,5 +1,13 @@
 <?php
 
+  /**
+   * Upside-Down Text Generator Class. Converts most lower ASCII characters into
+   * higher Unicode symbols that appear rotated 180 degrees. Reverses the entire
+   * input string to yield text that is readable when flipped upside-down.
+   * @author Scott Smitelli
+   * @package sort_of_face
+   */
+
   class UpsideDownTextGenerator {
     private static $translations = array(
       // These must all be in UTF-8!
@@ -70,10 +78,23 @@
       '{' => '}',
       '}' => '{'
     );
-  
+
+    /**
+     * Converts a string of ASCII text into upside-down text. This is
+     * accomplished by reversing the entire input string and then replacing each
+     * character with a symbol from the lookup table. PLEASE NOTE that strings
+     * which already contain multi-byte characters will likely be mangled beyond
+     * recognition! Additionally, the lookup table does NOT currently allow the
+     * process to be reversed by convert()ing the text a second time.
+     * @access public
+     * @param string $text The source string
+     * @return string The same input string, reversed, upside-down
+     */  
     public static function convert($text) {
+      // Reverse the input
       $text = strrev($text);
     
+      // Convert each letter in the source string
       $output = '';
       for ($i = 0; $i < strlen($text); $i++) {
         $output .= self::getTranslatedChar($text[$i]);
@@ -81,14 +102,25 @@
       
       return $output;
     }
-    
+
+    /**
+     * Looks up a source character in the translation table and returns the
+     * translated character. If a source character does not exist in the table,
+     * it will not be modified in the output.
+     * @access private
+     * @param string $char The input character
+     * @return string The translated character (if one exists) or the original
+     */    
     private static function getTranslatedChar($char) {
+      // Look up this character's translation
       $result = isset(self::$translations[$char]) ? self::$translations[$char] : NULL;
       
       if ($result) {
+        // Found one; return it
         return $result;
       }
       
+      // This character wasn't in the table -- return the original
       return $char;
     }
   }

@@ -48,8 +48,9 @@
     /**
      * Looks up a source character in the translation table and returns the
      * translated character. If multiple possible translations exist, a random
-     * one will be returned each time.
-     * @accessp private
+     * one will be returned each time. If a source character does not exist in
+     * the table, it will not be modified in the output.
+     * @access private
      * @param string $char The input character
      * @return string The translated character (if one exists) or the original
      */
