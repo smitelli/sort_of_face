@@ -34,3 +34,7 @@ max_length = 140
 ; The probability, in percentages (0 - 100%), that the tweet will be sent out in
 ; fake Cyrillic encoding.
 cyrillic_probability = 10
+
+; The probability, in percentages (0 - 100%), that the tweet will be sent out in
+; upside-down text. (Upside-down takes precedence over Cyrillic.)
+upside_down_probability = 0

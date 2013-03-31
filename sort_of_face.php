@@ -70,8 +70,12 @@
           $length = rand($config['twitter']['min_length'], $config['twitter']['max_length']);
           list($line) = explode("\n", wordwrap($line, $length));
 
-          // Possibly translate this line into fake Cyrillic
-          if ($config['twitter']['cyrillic_probability'] >= rand(1, 100)) {
+          if ($config['twitter']['upside_down_probability'] >= rand(1, 100)) {
+            // Possibly convert this line into upside-down text
+            $line = UpsideDownTextGenerator::convert($line);
+
+          } else if ($config['twitter']['cyrillic_probability'] >= rand(1, 100)) {
+            // Possibly translate this line into fake Cyrillic
             $line = FakeCyrillicGenerator::convert($line);
           }
 
