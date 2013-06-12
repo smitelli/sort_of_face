@@ -17,8 +17,12 @@
      * @todo Uses v1 API endpoint; will eventually break
      */
     public function __construct() {
+      // TODO: This was a quick and dirty hack.
+      global $config;
+
       // Request a list of items
-      $data = $this->loadData('http://api.twitter.com/1/trends/daily.json');
+      $twitter = new TwitterWrapper($config['twitter']);
+      $data = $twitter->getData('http://api.twitter.com/1.1/trends/daily.json');
       $this->parseData($data);
     }
 

@@ -11,7 +11,6 @@
   require_once APP_DIR . '/libraries/twitteroauth/twitteroauth.php';
 
   class TwitterWrapper {
-    private $api_base_url = 'https://api.twitter.com/1.1/';
     private $consumer_key;
     private $consumer_secret;
     private $access_token;
@@ -29,6 +28,9 @@
       $this->consumer_secret     = $config['consumer_secret'];
       $this->access_token        = $config['access_token'];
       $this->access_token_secret = $config['access_token_secret'];
+
+      // Set up the OAuth library to talk to Twitter
+      $this->twitter = new TwitterOAuth($this->consumer_key, $this->consumer_secret, $this->access_token, $this->access_token_secret);
     }
 
     /**
@@ -38,12 +40,8 @@
      * @param string $status The text content of the tweet to send
      */
     public function sendTweet($status) {
-      // Set up the OAuth library to talk to Twitter
-      $twitter = new TwitterOAuth($this->consumer_key, $this->consumer_secret, $this->access_token, $this->access_token_secret);
-      $twitter->host = $this->api_base_url;
-
       // Make the request and read the API response
-      $response = $twitter->post('http://api.twitter.com/1/statuses/update.json', array('status' => $status));
+      $response = $this->twitter->post('http://api.twitter.com/1.1/statuses/update.json', array('status' => $status));
 
       if (empty($response)) {
         // Response was blank
@@ -58,6 +56,13 @@
         // Response lacked any indication that the tweet was created
         throw new TwitterException("Could not create tweet.");
       }
+    }
+
+    public function getData($url, $parameters = array()) {
+      // Make the request and read the API response
+      $response = $this->twitter->get($url, $parameters);
+
+      return $response;
     }
     
     /**
