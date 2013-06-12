@@ -34,15 +34,14 @@
      */
     protected function parseData($data) {
       // Parse the loaded data, make sure it contains what we need
-      $dataObj = json_decode($data);
-      if (!isset($dataObj->trends)) {
+      if (!isset($data->trends)) {
         throw new PumpException("Could not parse the loaded {$this->itemNoun}.");
       }
 
       // Result is grouped by hours; flatten it to a single array and remove URL
       // encoding.
       $tmp = array();
-      foreach ($dataObj->trends as $hour) {
+      foreach ($data->trends as $hour) {
         foreach ($hour as $item) {
           $tmp[] = urldecode($item->query);
         }
