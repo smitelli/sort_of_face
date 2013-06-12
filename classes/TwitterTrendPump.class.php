@@ -22,7 +22,7 @@
 
       // Request a list of items
       $twitter = new TwitterWrapper($config['twitter']);
-      $data = $twitter->getData('http://api.twitter.com/1.1/trends/daily.json');
+      $data = $twitter->getData('https://api.twitter.com/1.1/trends/place.json', array('id' => 1, 'exclude' => 'hashtags'));
       $this->parseData($data);
     }
 
@@ -41,10 +41,8 @@
       // Result is grouped by hours; flatten it to a single array and remove URL
       // encoding.
       $tmp = array();
-      foreach ($data->trends as $hour) {
-        foreach ($hour as $item) {
-          $tmp[] = urldecode($item->query);
-        }
+      foreach ($data[0]->trends as $item) {
+        $tmp[] = urldecode($item->query);
       }
 
       // Save the items and randomize their order
