@@ -34,6 +34,7 @@
      */
     protected function parseData($data) {
       // Parse the loaded data, make sure it contains what we need
+      $data = $data[0];
       if (!isset($data->trends)) {
         throw new PumpException("Could not parse the loaded {$this->itemNoun}.");
       }
@@ -41,7 +42,7 @@
       // Result is grouped by hours; flatten it to a single array and remove URL
       // encoding.
       $tmp = array();
-      foreach ($data[0]->trends as $item) {
+      foreach ($data->trends as $item) {
         $tmp[] = urldecode($item->query);
       }
 
