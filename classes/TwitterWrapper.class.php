@@ -58,6 +58,12 @@
       }
     }
 
+    /**
+     * Convenience wrapper function to do a basic GET with proper
+     * authentication.
+     * @param string $url The base URL to request, with no query params
+     * @param array $parameters Assoc array of query string parameters
+     */
     public function getData($url, $parameters = array()) {
       // Make the request and read the API response
       $response = $this->twitter->get($url, $parameters);
