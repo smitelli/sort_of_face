@@ -11,6 +11,7 @@
   require_once APP_DIR . '/libraries/twitteroauth/twitteroauth.php';
 
   class TwitterWrapper {
+    private $api_base_url = 'https://api.twitter.com/1.1/';
     private $consumer_key;
     private $consumer_secret;
     private $access_token;
@@ -37,8 +38,11 @@
      * @param string $status The text content of the tweet to send
      */
     public function sendTweet($status) {
-      // Make the request and read the API response
+      // Set up the OAuth library to talk to Twitter
       $twitter = new TwitterOAuth($this->consumer_key, $this->consumer_secret, $this->access_token, $this->access_token_secret);
+      $twitter->host = $this->api_base_url;
+
+      // Make the request and read the API response
       $response = $twitter->post('http://api.twitter.com/1/statuses/update.json', array('status' => $status));
 
       if (empty($response)) {
