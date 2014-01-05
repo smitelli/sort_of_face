@@ -23,6 +23,9 @@
     die("The file config.ini is missing or malformed.\n\n");
   }
 
+  // Set up the timezone
+  date_default_timezone_set($config['timing']['timezone']);
+
   // Only run if the time is within `run_grace` minutes of `run_interval` past the hour
   echo "========== Currently " . date('r') . " ==========";
   $offset = intval(date('i')) % $config['timing']['run_interval'];
