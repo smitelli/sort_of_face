@@ -41,7 +41,7 @@
      */
     public function sendTweet($status) {
       // Make the request and read the API response
-      $response = $this->twitter->post('http://api.twitter.com/1.1/statuses/update.json', array('status' => $status));
+      $response = $this->twitter->post('https://api.twitter.com/1.1/statuses/update.json', array('status' => $status));
 
       if (empty($response)) {
         // Response was blank
@@ -70,7 +70,7 @@
 
       return $response;
     }
-    
+
     /**
      * Escapes certain string sequences that can be interpreted by Twitter as
      * being commands to perform undesired actions.
