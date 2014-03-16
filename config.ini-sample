@@ -41,3 +41,7 @@ cyrillic_probability = 10
 ; The probability, in percentages (0 - 100%), that the tweet will be sent out in
 ; upside-down text. (Upside-down takes precedence over Cyrillic.)
 upside_down_probability = 0
+
+; The probability, in percentages (0 - 100%), that the tweet will be sent out in
+; Unicode fullwidth encoding. (Fullwidth takes precedence over upside-down.)
+fullwidth_probability = 0

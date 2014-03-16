@@ -73,7 +73,11 @@
           $length = rand($config['twitter']['min_length'], $config['twitter']['max_length']);
           list($line) = explode("\n", wordwrap($line, $length));
 
-          if ($config['twitter']['upside_down_probability'] >= rand(1, 100)) {
+          if ($config['twitter']['fullwidth_probability'] >= rand(1, 100)) {
+            // Possibly convert this line into upside-down text
+            $line = FullwidthGenerator::convert($line);
+
+          } else if ($config['twitter']['upside_down_probability'] >= rand(1, 100)) {
             // Possibly convert this line into upside-down text
             $line = UpsideDownTextGenerator::convert($line);
 
