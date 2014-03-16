@@ -118,10 +118,28 @@
      */
     private static function htmlToText($str) {
       $str = html_entity_decode($str);  //decode entities
-      $str = preg_replace('/&#x([0-9a-f]+);/ei', 'chr(hexdec("\\1"))', $str);  //decode &#xXXXX;
-      $str = preg_replace('/&#([0-9]+);/e', 'chr("\\1")', $str);  //decode &#XXX;
+      $str = preg_replace_callback('/&#x([0-9a-f]+);/i', 'self::hexToChar', $str);  //decode &#xXXXX;
+      $str = preg_replace_callback('/&#([0-9]+);/', 'self::decToChar', $str);  //decode &#XXX;
       $str = preg_replace('/[\n\r\s\t]+/', ' ', $str);  //newlines/space runs become one space
       return trim($str);  //remove stray leading/trailing space
+    }
+
+    /**
+     * Converts a hexadecimal string into the character it corresponds to.
+     * @param array $matches The array of matches from preg_replace_callback()
+     * @return string The new character
+     */
+    private static function hexToChar($matches) {
+      return chr(hexdec($matches[0]));
+    }
+
+    /**
+     * Converts an integer string into the character it corresponds to.
+     * @param array $matches The array of matches from preg_replace_callback()
+     * @return string The new character
+     */
+    private static function decToChar($matches) {
+      return chr($matches[0]);
     }
   }
 
