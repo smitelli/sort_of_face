@@ -86,6 +86,11 @@
             $line = FakeCyrillicGenerator::convert($line);
           }
 
+          if (date('n') == 10) {
+            // Definitely do the Halloween thing if it's October
+            $line = EmojiEmbellisher::convertHalloween($line);
+          }
+
           try {
             // Send a tweet
             echo "\n    Sending [$line]... ";
