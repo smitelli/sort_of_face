@@ -2,9 +2,9 @@
 ; What timezone we're in
 timezone = "America/New_York"
 
-; Specifies the minute interval the script should act on. 15 means 12:00,
+; Specifies the minute interval the script should act on. 15 would mean 12:00,
 ; 12:15, 12:30, 12:45, 1:00, 1:15, and so on.
-run_interval = 15
+run_interval = 30
 
 ; Specifies how many minutes late the script can be and still act. 2 means
 ; that, if the script was supposed to act at 12:00, it would also act if the
@@ -23,10 +23,10 @@ max_attempts = 10
 ;   3. Copy "Consumer key" and "Consumer secret" values.
 ;   4. Create a new access token (if you don't have one)
 ;   5. Copy "Access token" and "Access token secret" values.
-consumer_key        = "FILL ME IN"
-consumer_secret     = "FILL ME IN"
-access_token        = "FILL ME IN"
-access_token_secret = "FILL ME IN"
+consumer_key        = "FILL_ME_IN"
+consumer_secret     = "FILL_ME_IN"
+access_token        = "FILL_ME_IN"
+access_token_secret = "FILL_ME_IN"
 
 ; Min and max length of the generated tweets. The length will be a random value
 ; somewhere between these two. It could also be less (if the selected line is
@@ -36,12 +36,12 @@ max_length = 140
 
 ; The probability, in percentages (0 - 100%), that the tweet will be sent out in
 ; fake Cyrillic encoding.
-cyrillic_probability = 10
+cyrillic_probability = 3
 
 ; The probability, in percentages (0 - 100%), that the tweet will be sent out in
 ; upside-down text. (Upside-down takes precedence over Cyrillic.)
-upside_down_probability = 0
+upside_down_probability = 3
 
 ; The probability, in percentages (0 - 100%), that the tweet will be sent out in
 ; Unicode fullwidth encoding. (Fullwidth takes precedence over upside-down.)
-fullwidth_probability = 0
+fullwidth_probability = 3
