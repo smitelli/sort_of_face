@@ -17,7 +17,9 @@
      * @todo Uses v1 API endpoint; will eventually break
      */
     public function __construct() {
-      // TODO: This was a quick and dirty hack.
+      // TODO: This is a quick and ugly hack. Used to be able to just query the
+      // trends with curl, now we need to shoehorn access tokens and OAuth
+      // clients where they didn't need to exist before.
       global $config;
 
       // Request a list of items
