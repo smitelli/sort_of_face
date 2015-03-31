@@ -11,9 +11,21 @@ run_interval = 30
 ; time was 12:01 or 12:02 -- but not 12:03.
 run_grace = 2
 
+[twitter_youtube_source]
 ; Specifies the maximum number of trends that will be considered (outermost
 ; loop) before the script gives up completely.
 max_attempts = 10
+
+; Min and max length of the generated source text. The length will be a random
+; value somewhere between these two. It could also be less (if the selected line
+; is very short) or more (if a very long word starts too close to the end).
+min_length = 20
+max_length = 140
+
+[haters_source]
+; The probability, in percentages (0 - 100%), that the Haters source will be
+; used instead of the default Twitter+YouTube source.
+haters_probability = 5
 
 [twitter]
 ; To generate these:
@@ -27,12 +39,6 @@ consumer_key        = "FILL_ME_IN"
 consumer_secret     = "FILL_ME_IN"
 access_token        = "FILL_ME_IN"
 access_token_secret = "FILL_ME_IN"
-
-; Min and max length of the generated tweets. The length will be a random value
-; somewhere between these two. It could also be less (if the selected line is
-; very short) or more (if a long word starts at the end of the chosen length).
-min_length = 20
-max_length = 140
 
 ; The probability, in percentages (0 - 100%), that the tweet will be sent out in
 ; fake Cyrillic encoding.

@@ -20,101 +20,69 @@
   // Load and parse the configuration file
   $config = @parse_ini_file(APP_DIR . '/config.ini', TRUE);
   if (empty($config)) {
-    die("The file config.ini is missing or malformed.\n\n");
+    ConsoleLogger::writeLn("The file config.ini is missing or malformed.");
+    die();
   }
 
   // Set up the timezone
   date_default_timezone_set($config['timing']['timezone']);
 
   // Only run if the time is within `run_grace` minutes of `run_interval` past the hour
-  echo "========== Currently " . date('r') . " ==========";
   $offset = intval(date('i')) % $config['timing']['run_interval'];
   if ($offset > $config['timing']['run_grace']) {
-    die("\nNot time to run.\n\n");
+    ConsoleLogger::writeLn("Not time to run.");
+    die();
   }
 
-  // Load the current trends from Twitter
+  if ($config['haters_source']['haters_probability'] >= rand(1, 100)) {
+    // Possibly send a "xers gonna x" message instead
+    $source = new HatersSource($config['haters_source']);
+  } else {
+    // In all other cases, fall back on Twitter+YouTube
+    $source = new TwitterYoutubeSource($config['twitter_youtube_source']);
+  }
+
   try {
-    $trends = new TwitterTrendPump();
-  } catch (PumpException $e) {
-    // If we don't have trends, there's no way the script can work
-    die($e->getMessage() . "\n\n");
+    // Read one line from our source -- that's all we should ever require
+    $line = $source->getLine();
+  } catch (SourceException $e) {
+    // Error getting a source line
+    ConsoleLogger::writeLn($e->getMessage());
   }
 
-  // Loop over every trend...
-  $attempts = 0;
-  while ($trends->hasItems()) {
-    if (++$attempts > $config['timing']['max_attempts']) {
-      // Runaway script protection
-      die("\nToo many failed attempts.\n\n");
-    }
+  // Make sure the line doesn't start with an SMS command sequence
+  $line = TwitterWrapper::smsCommandEscape($line);
 
-    try {
-      // Use the current trend as a YT search term
-      $searchTerm = $trends->nextItem();
-      echo "\nConsidering Twitter trend [$searchTerm]... ";
-      $videos = new YoutubeSearchPump("{$searchTerm},cc");  //',cc' means we want closed-captioning
+  if ($config['twitter']['fullwidth_probability'] >= rand(1, 100)) {
+    // Possibly convert this line into upside-down text
+    $line = FullwidthGenerator::convert($line);
 
-      // Loop over every video ID from the search results page
-      while ($videos->hasItems()) {
-        // Use this video ID to load the autocap data from YT
-        $videoId = $videos->nextItem();
-        echo "\n  Trying YouTube video ID [$videoId]... ";
-        $captions = new YoutubeAutocapPump($videoId);
+  } else if ($config['twitter']['upside_down_probability'] >= rand(1, 100)) {
+    // Possibly convert this line into upside-down text
+    $line = UpsideDownTextGenerator::convert($line);
 
-        // Loop over every line from the autocap file
-        while ($captions->hasItems()) {
-          $line = $captions->nextItem();
-
-          // Make sure the line doesn't start with an SMS command sequence
-          $line = TwitterWrapper::smsCommandEscape($line);
-
-          // Trim the line to a random length
-          $length = rand($config['twitter']['min_length'], $config['twitter']['max_length']);
-          list($line) = explode("\n", wordwrap($line, $length));
-
-          if ($config['twitter']['fullwidth_probability'] >= rand(1, 100)) {
-            // Possibly convert this line into upside-down text
-            $line = FullwidthGenerator::convert($line);
-
-          } else if ($config['twitter']['upside_down_probability'] >= rand(1, 100)) {
-            // Possibly convert this line into upside-down text
-            $line = UpsideDownTextGenerator::convert($line);
-
-          } else if ($config['twitter']['cyrillic_probability'] >= rand(1, 100)) {
-            // Possibly translate this line into fake Cyrillic
-            $line = FakeCyrillicGenerator::convert($line);
-          }
-
-          if (date('n') == 10) {
-            // Definitely do the Halloween thing if it's October
-            $line = EmojiEmbellisher::convertHalloween($line);
-          }
-
-          try {
-            // Send a tweet
-            echo "\n    Sending [$line]... ";
-            $twitter = new TwitterWrapper($config['twitter']);
-            $twitter->sendTweet($line);
-
-          } catch (TwitterException $e) {
-            // Error sending the tweet
-            echo $e->getMessage();
-            continue 3;  //jump to next trend
-          }
-
-          break 3;  //bail out of all loops
-        }
-      }
-
-    } catch (PumpException $e) {
-      // Error from one of the pumps
-      echo $e->getMessage();
-      continue;  //jump to next trend
-    }
+  } else if ($config['twitter']['cyrillic_probability'] >= rand(1, 100)) {
+    // Possibly translate this line into fake Cyrillic
+    $line = FakeCyrillicGenerator::convert($line);
   }
 
-  // It worked!
-  echo "\nDone.\n\n";
+  if (date('n') == 10) {
+    // Definitely do the Halloween thing if it's October
+    $line = EmojiEmbellisher::convertHalloween($line);
+  }
+
+  try {
+    // Send a tweet
+    ConsoleLogger::writeLn("    Sending [$line]... ");
+    $twitter = new TwitterWrapper($config['twitter']);
+    $twitter->sendTweet($line);
+
+  } catch (TwitterException $e) {
+    // Error sending the tweet (TODO: Should it retry?)
+    ConsoleLogger::writeLn($e->getMessage());
+  }
+
+  // It's over!
+  ConsoleLogger::writeLn("Done.");
 
 ?>
