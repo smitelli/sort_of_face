@@ -52,14 +52,14 @@
         try {
           // Use the current trend as a YT search term
           $searchTerm = $trends->nextItem();
-          ConsoleLogger::writeLn("Considering Twitter trend [$searchTerm]...");
+          ConsoleLogger::writeLn("Considering Twitter trend [$searchTerm]");
           $videos = new YoutubeSearchPump("{$searchTerm},cc");  //',cc' means we want closed-captioning
 
           // Loop over every video ID from the search results page
           while ($videos->hasItems()) {
             // Use this video ID to load the autocap data from YT
             $videoId = $videos->nextItem();
-            ConsoleLogger::writeLn("  Trying YouTube video ID [$videoId]...");
+            ConsoleLogger::writeLn("\tTrying YouTube video ID [$videoId]");
             $captions = new YoutubeAutocapPump($videoId);
 
             // Loop over every line from the autocap file
@@ -77,7 +77,7 @@
           }
         } catch (PumpException $e) {
           // Error from one of the pumps
-          ConsoleLogger::writeLn($e->getMessage());
+          ConsoleLogger::writeLn("PumpException: " . $e->getMessage());
           continue;  //jump to next trend
         }
       }

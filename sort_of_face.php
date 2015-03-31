@@ -20,7 +20,7 @@
   // Load and parse the configuration file
   $config = @parse_ini_file(APP_DIR . '/config.ini', TRUE);
   if (empty($config)) {
-    ConsoleLogger::writeLn("The file config.ini is missing or malformed.");
+    ConsoleLogger::writeLn("ERROR: The file config.ini is missing or malformed.");
     die();
   }
 
@@ -47,7 +47,8 @@
     $line = $source->getLine();
   } catch (SourceException $e) {
     // Error getting a source line
-    ConsoleLogger::writeLn($e->getMessage());
+    ConsoleLogger::writeLn("SourceException: " . $e->getMessage());
+    die();
   }
 
   // Make sure the line doesn't start with an SMS command sequence
@@ -73,13 +74,14 @@
 
   try {
     // Send a tweet
-    ConsoleLogger::writeLn("    Sending [$line]... ");
+    ConsoleLogger::writeLn("Posting [$line] to Twitter");
     $twitter = new TwitterWrapper($config['twitter']);
     $twitter->sendTweet($line);
 
   } catch (TwitterException $e) {
     // Error sending the tweet (TODO: Should it retry?)
-    ConsoleLogger::writeLn($e->getMessage());
+    ConsoleLogger::writeLn("TwitterException: " . $e->getMessage());
+    die();
   }
 
   // It's over!
