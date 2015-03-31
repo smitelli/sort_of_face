@@ -27,6 +27,10 @@ max_length = 140
 ; used instead of the default Twitter+YouTube source.
 haters_probability = 5
 
+; Location of the dictionary file on the filesystem. This file should contain
+; one word per line.
+dictionary_file = /usr/share/dict/words
+
 [twitter]
 ; To generate these:
 ;   1. Visit https://dev.twitter.com/apps/new and log in if needed.
