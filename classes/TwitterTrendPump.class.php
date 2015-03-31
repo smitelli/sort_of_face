@@ -14,7 +14,6 @@
      * Constructor function. Automatically loads the list of trends from
      * Twitter and parses them.
      * @access public
-     * @todo Uses v1 API endpoint; will eventually break
      */
     public function __construct() {
       // TODO: This is a quick and ugly hack. Used to be able to just query the

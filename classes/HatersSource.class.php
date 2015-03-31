@@ -22,7 +22,6 @@
      * Picks random words out of the system dictionary file and builds an "xers
      * gonna x" sentence around them.
      * @access public
-     * @todo Maybe it would be lazier to run grep and shuf in a subshell.
      * @return string A piece of gibberish
      */
     public function getLine() {
