@@ -31,7 +31,7 @@
 
       // Search the dictionary for all words that end in "er"
       $matches = array();
-      preg_match_all('/(^.+)er$/m', $dictionary, $matches);
+      preg_match_all('/^(.+)er$/m', $dictionary, $matches);
 
       if (isset($matches[1]) && count($matches[1]) > 0) {
         // We found at least one word that can work. Save the captured portion,
