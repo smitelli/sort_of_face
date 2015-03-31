@@ -25,9 +25,13 @@
       // Request a list of items
       $twitter = new TwitterWrapper($config['twitter']);
       $data = $twitter->getData('https://api.twitter.com/1.1/trends/place.json', array('id' => 1, 'exclude' => 'hashtags'));
+
+      if (isset($data->errors)) {
+        throw new PumpException("Could not load the {$this->itemNoun}.");
+      }
+
       $this->parseData($data);
     }
-
 
     /**
      * Parses the returned data, shuffles it, and stores it in the collection.
