@@ -51,9 +51,6 @@
     die();
   }
 
-  // Make sure the line doesn't start with an SMS command sequence
-  $line = TwitterWrapper::smsCommandEscape($line);
-
   if ($config['twitter']['fullwidth_probability'] >= rand(1, 100)) {
     // Possibly convert this line into upside-down text
     $line = FullwidthGenerator::convert($line);
@@ -71,6 +68,9 @@
     // Definitely do the Halloween thing if it's October
     $line = EmojiEmbellisher::convertHalloween($line);
   }
+
+  // Make sure the line doesn't start with an SMS command sequence
+  $line = TwitterWrapper::smsCommandEscape($line);
 
   try {
     // Send a tweet
