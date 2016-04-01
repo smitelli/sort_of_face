@@ -38,25 +38,8 @@
      * @return string A piece of gibberish
      */
     private function getHaters() {
-      // Read in the dictionary file
-      ConsoleLogger::writeLn("Using dictionary file " . $this->dictionary_file);
-      $dictionary = file_get_contents($this->dictionary_file);
-
-      // Search the dictionary for all words that end in "er"
-      $matches = array();
-      preg_match_all('/^(.+)er$/m', $dictionary, $matches);
-
-      if (isset($matches[1]) && count($matches[1]) > 0) {
-        // We found at least one word that can work. Save the captured portion,
-        // that is, the front part of the word excluding the "er"
-        $candidates = $matches[1];
-      } else {
-        // No suitable matches
-        throw new SourceException("Could not find any candidates.");
-      }
-
       // Pick a word at random and use it in a sentence
-      $base_word = $candidates[array_rand($candidates)];
+      $base_word = $this->getDictEntry('/^(.+)er$/m');
       return "{$base_word}ers gonna {$base_word}";
     }
 
@@ -68,10 +51,7 @@
      * @return string A piece of gibberish
      */
     private function getWreckedEm() {
-      // Read in the dictionary file
-      ConsoleLogger::writeLn("Using dictionary file " . $this->dictionary_file);
-      $dictionary = file_get_contents($this->dictionary_file);
-
+      // Pluck a random template out of the pre-determined list
       $choices = array(
         array('gender' => 'f', 'template' => "$? It damn near killed her!"),
         array('gender' => 'f', 'template' => "$? It practically destroyed her!"),
@@ -82,25 +62,48 @@
         array('gender' => 'm', 'template' => "$? It practically destroyed him!"),
         array('gender' => 'm', 'template' => "$? I just met him!"),
         array('gender' => 'm', 'template' => "$? I barely know him!"),
+        array('gender' => 'm', 'template' => "$? I don't even know him!"),
         array('gender' => 'o', 'template' => "$? I just met you!"),
         array('gender' => 'o', 'template' => "$? I barely know you!"),
         array('gender' => 'o', 'template' => "$? I don't even know you!"),
+        array('gender' => 'o', 'template' => "$? But I don't like you!")
       );
       $choice = $choices[array_rand($choices)];
 
-      // Search the dictionary for all words that end in a usable suffix
+      // Pick a word at random that fits within the chosen template's gender
       $matches = array();
       switch ($choice['gender']) {
-        case 'm':
-          preg_match_all('/^(.+(em|im|um))$/m', $dictionary, $matches);
+        case 'm':  //words that sound like "him"
+          $base_word = $this->getDictEntry('/^(.+(em|im|um))$/m');
           break;
-        case 'f':
-          preg_match_all('/^(.+(er|or|re))$/m', $dictionary, $matches);
+        case 'f':  //words that sound like "her"
+          $base_word = $this->getDictEntry('/^(.+(er|or|re))$/m');
           break;
-        default:
-          preg_match_all('/^(.+(oo|ou|ue))$/m', $dictionary, $matches);
+        default:  //ideally, words that sound like "you"
+          $base_word = $this->getDictEntry('/^(.+(oo|ou|ue))$/m');
           break;
       }
+
+      // Construct the final output sentence
+      return str_replace('$', ucfirst($base_word), $choice['template']);
+    }
+
+    /**
+     * Picks random words out of the system dictionary file that match the
+     * specified regex. The pattern must contain a capture group; this
+     * determines whether part of the word or the whole word should be returned.
+     * @access private
+     * @param array $pattern The regex to match and capture on
+     * @return string A piece of gibberish
+     */
+    private function getDictEntry($pattern) {
+      // Read in the dictionary file
+      ConsoleLogger::writeLn("Using dictionary file " . $this->dictionary_file);
+      $dictionary = file_get_contents($this->dictionary_file);
+
+      // Search the dictionary for all words that end in "er"
+      $matches = array();
+      preg_match_all($pattern, $dictionary, $matches);
 
       if (isset($matches[1]) && count($matches[1]) > 0) {
         // We found at least one word that can work. Save the captured portion,
@@ -111,9 +114,8 @@
         throw new SourceException("Could not find any candidates.");
       }
 
-      // Pick a word at random and use it in a sentence
-      $base_word = $candidates[array_rand($candidates)];
-      return str_replace('$', ucfirst($base_word), $choice['template']);
+      // Pick a random word and return it
+      return $candidates[array_rand($candidates)];
     }
   }
 
