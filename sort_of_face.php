@@ -36,7 +36,10 @@
 
   if ($config['haters_source']['haters_probability'] >= rand(1, 100)) {
     // Possibly send a "xers gonna x" message instead
-    $source = new HatersSource($config['haters_source']);
+    $source = new HatersSource($config['haters_source'], 'haters');
+  } else if ($config['haters_source']['wreckedem_probability'] >= rand(1, 100)) {
+    // Possibly send a "wrecked 'em" message instead
+    $source = new HatersSource($config['haters_source'], 'wreckedem');
   } else {
     // In all other cases, fall back on Twitter+YouTube
     $source = new TwitterYoutubeSource($config['twitter_youtube_source']);

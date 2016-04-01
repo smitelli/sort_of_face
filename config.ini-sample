@@ -27,6 +27,10 @@ max_length = 140
 ; used instead of the default Twitter+YouTube source.
 haters_probability = 5
 
+; The probability, in percentages (0 - 100%), that the Wrecked 'Em source will
+; be used instead of the default Twitter+YouTube sources.
+wreckedem_probability = 5
+
 ; Location of the dictionary file on the filesystem. This file should contain
 ; one word per line.
 dictionary_file = /usr/share/dict/words
