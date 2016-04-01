@@ -32,8 +32,8 @@
     }
 
     /**
-     * Picks random words out of the system dictionary file and builds an "xers
-     * gonna x" sentence around them.
+     * Picks a random "-er" word and and builds an "xers gonna x" sentence
+     * around it.
      * @access private
      * @return string A piece of gibberish
      */
@@ -44,9 +44,9 @@
     }
 
     /**
-     * Picks random words out of the system dictionary file and builds a
-     * "Rectum? It damn near killed him!" sentence around them. This works quite
-     * poorly without a true rhyming dictionary, and that's sort of the point.
+     * Picks a random word and builds a "Rectum? It damn near killed him!"
+     * sentence around it. This works rather poorly without a true rhyming
+     * dictionary, and that's sort of the point.
      * @access private
      * @return string A piece of gibberish
      */
@@ -90,11 +90,12 @@
 
     /**
      * Picks random words out of the system dictionary file that match the
-     * specified regex. The pattern must contain a capture group; this
-     * determines whether part of the word or the whole word should be returned.
+     * specified regex pattern. The pattern must contain at least one capture
+     * group; the first group encountered determines which part of the word (or
+     * the whole word) should be returned.
      * @access private
-     * @param array $pattern The regex to match and capture on
-     * @return string A piece of gibberish
+     * @param array $pattern The regex pattern to match and capture on
+     * @return string A single dictionary word matching the pattern and group
      */
     private function getDictEntry($pattern) {
       // Read in the dictionary file
