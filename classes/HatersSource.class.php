@@ -74,13 +74,13 @@
       $matches = array();
       switch ($choice['gender']) {
         case 'm':  //words that sound like "him"
-          $base_word = $this->getDictEntry('/^(.+(em|im|um))$/m');
+          $base_word = $this->getDictEntry('/^(.+em|im|um)$/m');
           break;
         case 'f':  //words that sound like "her"
-          $base_word = $this->getDictEntry('/^(.+(er|or|re))$/m');
+          $base_word = $this->getDictEntry('/^(.+er|or|re)$/m');
           break;
         default:  //ideally, words that sound like "you"
-          $base_word = $this->getDictEntry('/^(.+(oo|ou|ue))$/m');
+          $base_word = $this->getDictEntry('/^(.+oo|ou|ue)$/m');
           break;
       }
 
