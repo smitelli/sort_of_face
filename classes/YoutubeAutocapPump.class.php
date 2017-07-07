@@ -118,6 +118,7 @@
      */
     private static function htmlToText($str) {
       $str = html_entity_decode($str);  //decode entities
+      $str = strip_tags($str);  //remove any HTML tags that may be present
       $str = preg_replace_callback('/&#x([0-9a-f]+);/i', 'self::hexToChar', $str);  //decode &#xXXXX;
       $str = preg_replace_callback('/&#([0-9]+);/', 'self::decToChar', $str);  //decode &#XXX;
       $str = preg_replace('/[\n\r\s\t]+/', ' ', $str);  //newlines/space runs become one space
