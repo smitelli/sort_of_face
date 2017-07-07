@@ -48,6 +48,10 @@ consumer_secret     = "FILL_ME_IN"
 access_token        = "FILL_ME_IN"
 access_token_secret = "FILL_ME_IN"
 
+; The probability, in percentages (0 - 100%), that the tweet will be sent out
+; with claps inserted between every word.
+claps_probability = 3
+
 ; The probability, in percentages (0 - 100%), that the tweet will be sent out in
 ; fake Cyrillic encoding.
 cyrillic_probability = 3

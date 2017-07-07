@@ -54,7 +54,11 @@
     die();
   }
 
-  if ($config['twitter']['fullwidth_probability'] >= rand(1, 100)) {
+  if ($config['twitter']['claps_probability'] >= rand(1, 100)) {
+    // Possibly add claps into the text
+    $line = EmojiEmbellisher::convertClaps($line);
+
+  } else if ($config['twitter']['fullwidth_probability'] >= rand(1, 100)) {
     // Possibly convert this line into upside-down text
     $line = FullwidthGenerator::convert($line);
 
