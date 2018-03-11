@@ -20,7 +20,7 @@
     public function __construct($query) {
       // Request a list of items
       $q = urlencode($query);
-      $data = $this->loadData("http://www.youtube.com/results?search_query={$q}&search_sort=video_date_uploaded");
+      $data = $this->loadData("https://www.youtube.com/results?search_query={$q}&search_sort=video_date_uploaded");
       $this->parseData($data);
     }
 

@@ -18,7 +18,7 @@
      */
     public function __construct($videoId) {
       // Request a list of items
-      $data = $this->loadData("http://www.youtube.com/watch?v={$videoId}");
+      $data = $this->loadData("https://www.youtube.com/watch?v={$videoId}");
       $this->parseData($data);
     }
 
