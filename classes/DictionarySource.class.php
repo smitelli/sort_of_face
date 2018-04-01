@@ -23,6 +23,10 @@
     public function __construct($config, $mode) {
       $this->dictionary_file = $config['dictionary_file'];
       $this->mode = $mode;
+
+      // Read in the dictionary file
+      ConsoleLogger::writeLn("Using dictionary file " . $this->dictionary_file);
+      $this->dictionary = file_get_contents($this->dictionary_file);
     }
 
     /**
@@ -59,10 +63,29 @@
     }
 
     /**
-     * TODO
+     * Picks a random pairing of two words and builds a "The opposite of
+     * progress is congress." sentence around it.
+     * @access private
+     * @return string A piece of gibberish
      */
     private function getProCon() {
-      return 'pro-con';
+      $i = 0;
+
+      while (++$i < 1000) {
+        $pro = $this->getDictEntry('/^(pro.+)$/im');
+
+        $con_test = preg_replace('/^pro/i', 'con', $pro);
+
+        try {
+          $con = $this->getDictEntry('/^(' . $con_test . ')$/im');
+        } catch (SourceException $e) {
+          continue;
+        }
+
+        return "The opposite of $pro is $con.";
+      }
+
+      throw new SourceException("Gave up trying to find pro/con matches.");
     }
 
     /**
@@ -120,13 +143,9 @@
      * @return string A single dictionary word matching the pattern and group
      */
     private function getDictEntry($pattern) {
-      // Read in the dictionary file
-      ConsoleLogger::writeLn("Using dictionary file " . $this->dictionary_file);
-      $dictionary = file_get_contents($this->dictionary_file);
-
-      // Search the dictionary for all words that end in "er"
+      // Search the dictionary for all words that match the pattern
       $matches = array();
-      preg_match_all($pattern, $dictionary, $matches);
+      preg_match_all($pattern, $this->dictionary, $matches);
 
       if (isset($matches[1]) && count($matches[1]) > 0) {
         // We found at least one word that can work. Save the captured portion,
