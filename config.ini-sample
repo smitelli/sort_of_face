@@ -22,10 +22,14 @@ max_attempts = 10
 min_length = 20
 max_length = 140
 
-[haters_source]
+[dictionary_source]
 ; The probability, in percentages (0 - 100%), that the Haters source will be
 ; used instead of the default Twitter+YouTube source.
 haters_probability = 5
+
+; The probability, in percentages (0 - 100%), that the Pro/Con source will be
+; used instead of the default Twitter+YouTube source.
+procon_probability = 5
 
 ; The probability, in percentages (0 - 100%), that the Wrecked 'Em source will
 ; be used instead of the default Twitter+YouTube sources.

@@ -34,12 +34,15 @@
     die();
   }
 
-  if ($config['haters_source']['haters_probability'] >= rand(1, 100)) {
+  if ($config['dictionary_source']['procon_probability'] >= rand(1, 100)) {
+    // Possibly send a pro/con message instead
+    $source = new DictionarySource($config['dictionary_source'], DictionarySource::MODE_PROCON);
+  } else if ($config['dictionary_source']['haters_probability'] >= rand(1, 100)) {
     // Possibly send a "xers gonna x" message instead
-    $source = new HatersSource($config['haters_source'], 'haters');
-  } else if ($config['haters_source']['wreckedem_probability'] >= rand(1, 100)) {
+    $source = new DictionarySource($config['dictionary_source'], DictionarySource::MODE_HATERS);
+  } else if ($config['dictionary_source']['wreckedem_probability'] >= rand(1, 100)) {
     // Possibly send a "wrecked 'em" message instead
-    $source = new HatersSource($config['haters_source'], 'wreckedem');
+    $source = new DictionarySource($config['dictionary_source'], DictionarySource::MODE_WRECKEDEM);
   } else {
     // In all other cases, fall back on Twitter+YouTube
     $source = new TwitterYoutubeSource($config['twitter_youtube_source']);

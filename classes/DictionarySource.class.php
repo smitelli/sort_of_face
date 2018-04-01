@@ -7,14 +7,18 @@
    * @package sort_of_face
    */
 
-  class HatersSource {
+  class DictionarySource {
+    const MODE_HATERS = 'haters';
+    const MODE_PROCON = 'procon';
+    const MODE_WRECKEDEM = 'wreckedem';
+
     private $dictionary_file;
 
     /**
      * Constructor function. Parses a config array for a 'dictionary_file' key.
      * @access public
      * @param array $config The configuration array
-     * @param string $mode The operation mode, either 'haters' or 'wreckedem'
+     * @param string $mode The operation mode, one of the MODE_* constants
      */
     public function __construct($config, $mode) {
       $this->dictionary_file = $config['dictionary_file'];
@@ -27,8 +31,19 @@
      * @return string A piece of gibberish
      */
     public function getLine() {
-      return ($this->mode == 'wreckedem') ?
-        $this->getWreckedEm() : $this->getHaters();
+      switch ($this->mode) {
+        case $this::MODE_HATERS:
+          return $this->getHaters();
+          break;
+
+        case $this::MODE_PROCON:
+          return $this->getProCon();
+          break;
+
+        case $this::MODE_WRECKEDEM:
+          return $this->getWreckedEm();
+          break;
+      }
     }
 
     /**
@@ -41,6 +56,13 @@
       // Pick a word at random and use it in a sentence
       $base_word = $this->getDictEntry('/^(.+)er$/m');
       return "{$base_word}ers gonna {$base_word}";
+    }
+
+    /**
+     * TODO
+     */
+    private function getProCon() {
+      return 'pro-con';
     }
 
     /**
