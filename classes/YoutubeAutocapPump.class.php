@@ -44,7 +44,7 @@
       // Extract the autocap URL from the provided page URL, if one is present
       $tmp = array();
       preg_match('/\'TTS_URL\': "(.+?)"/', $data, $tmp);
-      if (!isset($tmp[1]) || count($tmp[1]) < 1) {
+      if (!isset($tmp[1]) || strlen($tmp[1]) < 1) {
         throw new PumpException("Could not locate an autocap URL.");
       }
       $autocapUrl = self::jsStringUnescape($tmp[1]) . '&kind=asr&lang=en';
