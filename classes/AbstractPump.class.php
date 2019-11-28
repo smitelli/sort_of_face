@@ -55,7 +55,17 @@
      */
     protected function loadData($url) {
       // Make an HTTP request for the necessary data
-      $response = @file_get_contents($url);
+      $ch = curl_init();
+      curl_setopt($ch, CURLOPT_AUTOREFERER, TRUE);
+      curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
+      curl_setopt($ch, CURLOPT_HEADER, FALSE);
+      // Force IPv4 to avoid frequent "solve the CAPTCHA" responses from YT
+      curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
+      curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+      curl_setopt($ch, CURLOPT_URL, $url);
+      $response = curl_exec($ch);
+      curl_close($ch);
+
       if (empty($response)) {
         throw new PumpException("Could not load {$this->itemNoun}.");
       }

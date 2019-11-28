@@ -10,10 +10,11 @@ Installation and Requirements
 
 sort\_of\_face is developed and tested on PHP 5.3 machines. I am almost positive
 it will not run on 5.2 or lower. I never tested it on anything higher, either.
-The `curl` extension is required for the Twitter OAuth stuff, and the `mbstring`
-extension is required because of some JavaScript scraping shenanigans.
+The `curl` extension is required for the various things that do HTTP requests,
+and the `mbstring` extension is required because of some JavaScript scraping
+shenanigans.
 
-###To install:
+### To install:
 
 1.  Dump all the files somewhere. It really doesn't matter where.
 
