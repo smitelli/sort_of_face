@@ -64,9 +64,10 @@
       curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
       curl_setopt($ch, CURLOPT_URL, $url);
       $response = curl_exec($ch);
+      $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
       curl_close($ch);
 
-      if (empty($response)) {
+      if ($http_code < 200 || $http_code > 299 || empty($response)) {
         throw new PumpException("Could not load {$this->itemNoun}.");
       }
 
