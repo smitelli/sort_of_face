@@ -111,21 +111,26 @@
         array('gender' => 'o', 'template' => "$? I just met you!"),
         array('gender' => 'o', 'template' => "$? I barely know you!"),
         array('gender' => 'o', 'template' => "$? I don't even know you!"),
-        array('gender' => 'o', 'template' => "$? But I don't like you!")
+        array('gender' => 'o', 'template' => "$? But I don't like you!"),
+        array('gender' => 'u', 'template' => "$? It damn near killed us!"),
+        array('gender' => 'u', 'template' => "$? It practically destroyed us!")
       );
       $choice = $choices[array_rand($choices)];
 
       // Pick a word at random that fits within the chosen template's gender
       $matches = array();
       switch ($choice['gender']) {
-        case 'm':  //words that sound like "him"
-          $base_word = $this->getDictEntry('/^(.+em|im|um)$/m');
-          break;
         case 'f':  //words that sound like "her"
           $base_word = $this->getDictEntry('/^(.+er|or|re)$/m');
           break;
-        default:  //ideally, words that sound like "you"
+        case 'm':  //words that sound like "him"
+          $base_word = $this->getDictEntry('/^(.+em|im|um)$/m');
+          break;
+        case 'o':  //words that sound like "you"
           $base_word = $this->getDictEntry('/^(.+oo|ou|ue)$/m');
+          break;
+        case 'u':  //words that sound like "us"
+          $base_word = $this->getDictEntry('/^(.+us|uss|as)$/m');
           break;
       }
 
