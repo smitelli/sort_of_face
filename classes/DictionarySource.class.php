@@ -161,8 +161,20 @@
         throw new SourceException("Could not find any candidates.");
       }
 
-      // Pick a random word and return it
-      return $candidates[array_rand($candidates)];
+      // Pick a random word
+      $choice = $candidates[array_rand($candidates)];
+
+      // Quick check to make sure we didn't pick something that's going to get
+      // our Twitter account suspended, without having to enshrine the words in
+      // my commit history.
+      if (in_array(md5($choice), array(
+        'c35312fb3a7e05b7a44db2326bd29040',
+        '86ab9c942746110b9ddb2812c8518ba4'
+      ))) {
+        throw new SourceException("Randomly picked an offensive word.");
+      }
+
+      return $choice;
     }
   }
 
