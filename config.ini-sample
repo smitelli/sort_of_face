@@ -22,6 +22,10 @@ max_attempts = 10
 min_length = 20
 max_length = 140
 
+; The full path to a working yt-dlp binary (youtube-dl might also work but I
+; have not tried it). This is used to scrape subtitle tracks from YouTube URLs.
+yt_dlp_path = "/usr/local/bin/yt-dlp"
+
 [dictionary_source]
 ; The probability, in percentages (0 - 100%), that the Haters source will be
 ; used instead of the default Twitter+YouTube source.

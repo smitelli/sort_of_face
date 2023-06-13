@@ -22,6 +22,7 @@
       $this->max_attempts = $config['max_attempts'];
       $this->min_length   = $config['min_length'];
       $this->max_length   = $config['max_length'];
+      $this->yt_dlp_path  = $config['yt_dlp_path'];
     }
 
     /**
@@ -60,7 +61,7 @@
             // Use this video ID to load the autocap data from YT
             $videoId = $videos->nextItem();
             ConsoleLogger::writeLn("\tTrying YouTube video ID [$videoId]");
-            $captions = new YoutubeAutocapPump($videoId);
+            $captions = new YoutubeSubtitlePump($this->yt_dlp_path, $videoId);
 
             // Loop over every line from the autocap file
             while ($captions->hasItems()) {
